@@ -1,6 +1,6 @@
 ---
 - hosts: localhost
-  sudo: yes
+  become: yes
   tasks:
   - name: add repo
     apt_repository: 
