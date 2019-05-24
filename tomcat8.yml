@@ -3,13 +3,22 @@
   sudo: yes
   tasks:
   - name: add repo
-    apt_repository:
-      repo: ppa:openjdk-r/ppa
-  - name: install openjdk-8-jdk
-    become: yes
-    apt: 
+    apt_repository: 
+      repo: ppa:openjdk-r/ppa    
+  - name: install openjdk-8
+    apt:
       name: openjdk-8-jdk
-      state: present
+      update_cache: yes
+      state: present 
+  - name: Ensure group "tomcat" exists
+    group:
+      name: tomcat 
+      state: present 
+  - name: Add the user 'tomcat' with a specific uid and a primary group of 'tomcat'
+    user:
+      name: tomcat 
+      comment: tomcat done
+      group: tomcat
   - name: create folder
     file:
       path: /home/ubuntu/tomcat
