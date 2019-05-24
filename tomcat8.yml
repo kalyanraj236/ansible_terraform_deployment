@@ -1,0 +1,24 @@
+---
+- hosts: localhost
+  sudo: yes
+  tasks:
+  - name: install openjdk-8-jdk
+    become: yes
+    apt: 
+      name: openjdk-8-jdk
+      state: present
+  - name: create folder
+    file:
+      path: /home/ubuntu/tomcat
+      state: directory
+      mode: 0755
+      owner: ubuntu
+      group: ubuntu
+  - name: Download tomcat
+    get_url: url=https://www-eu.apache.org/dist/tomcat/tomcat-8/v8.5.40/bin/apache-tomcat-8.5.40.tar.gz dest=/home/ubuntu/tomcat
+  - name: Extract archive
+    unarchive: src=/home/ubuntu/tomcat/apache-tomcat-8.5.40.tar.gz dest=/home/ubuntu/tomcat
+  - name: start apache-tomcat-8.5.40
+    shell: /home/ubuntu/tomcat/apache-tomcat-8.5.40/bin/startup.sh
+  - name: copy gameoflife.war
+    shell: cp /home/ubuntu/ansible_terraform_deployment/gameoflife.war /home/ubuntu/tomcat/apache-tomcat-8.5.40/webapps/
